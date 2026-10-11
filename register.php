@@ -50,18 +50,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - FTS Amazon Reviews</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container" style="display:flex; align-items:center; justify-content:center; min-height:85vh;">
         <div class="auth-box">
             <div class="auth-header">
-                <h1>Daftar Akun Baru</h1>
+                <div class="auth-brand-badge">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                </div>
+                <h1>Daftar</h1>
                 <p>Mulai eksplorasi pencarian review Amazon</p>
             </div>
 
             <?php if ($error): ?>
-                <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+                <div class="alert alert-danger">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    <div><?= htmlspecialchars($error) ?></div>
+                </div>
             <?php endif; ?>
 
             <form method="POST" action="register.php">
@@ -77,7 +86,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="password_confirm">Konfirmasi Password</label>
                     <input type="password" id="password_confirm" name="password_confirm" class="form-control" required placeholder="Ulangi password">
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%;">Daftar Sekarang</button>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top:0.5rem;">
+                    Daftar
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
             </form>
 
             <div class="auth-footer">

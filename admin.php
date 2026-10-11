@@ -95,19 +95,30 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard & Query Logs - FTS PostgreSQL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- NAVBAR -->
     <nav class="navbar">
         <a href="index.php" class="nav-brand">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            Amazon Reviews FTS
+            <span class="nav-brand-badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </span>
+            <span>Amazon Reviews FTS</span>
         </a>
         <div class="nav-links">
-            <a href="index.php">← Kembali ke Pencarian User</a>
+            <a href="index.php" style="display:inline-flex; align-items:center; gap:0.4rem;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                Kembali ke Pencarian
+            </a>
             <span class="badge-admin">ADMINISTRATOR</span>
-            <a href="logout.php" class="btn-logout">Keluar</a>
+            <a href="logout.php" class="btn-logout">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Keluar
+            </a>
         </div>
     </nav>
 
@@ -115,28 +126,52 @@ try {
         <!-- HEADER -->
         <div class="card-header" style="margin-top: 1rem;">
             <div>
-                <h1 style="font-size: 1.85rem; font-weight: 800;">Dashboard Analisis & Log Query</h1>
-                <p style="color: var(--text-muted); font-size: 0.95rem;">Monitoring Performa Query, EXPLAIN ANALYZE, dan Optimasi Index (GIN vs GiST)</p>
+                <h1 style="font-size: 1.85rem; font-weight: 800; color:var(--text-main); letter-spacing:-0.025em;">Dashboard Analisis & Log Query</h1>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-top:0.25rem;">Monitoring Performa Query, EXPLAIN ANALYZE, dan Optimasi Index (GIN vs GiST)</p>
             </div>
         </div>
 
         <?php if ($message): ?>
-            <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
+            <div class="alert alert-success">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <div><?= htmlspecialchars($message) ?></div>
+            </div>
         <?php endif; ?>
 
         <!-- STATS OVERVIEW -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-label">Total Data Review (CSV)</div>
-                <div class="stat-value"><?= number_format($totalReviews) ?></div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div>
+                        <div class="stat-label">Total Data Review (CSV)</div>
+                        <div class="stat-value"><?= number_format($totalReviews) ?></div>
+                    </div>
+                    <div style="width:40px; height:40px; border-radius:10px; background:#eef2ff; color:var(--primary); display:flex; align-items:center; justify-content:center;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                    </div>
+                </div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Total Pencarian Dilakukan</div>
-                <div class="stat-value"><?= number_format($totalLogs) ?></div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div>
+                        <div class="stat-label">Total Pencarian Dilakukan</div>
+                        <div class="stat-value"><?= number_format($totalLogs) ?></div>
+                    </div>
+                    <div style="width:40px; height:40px; border-radius:10px; background:#eff6ff; color:#2563eb; display:flex; align-items:center; justify-content:center;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+                </div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Rata-rata Waktu Eksekusi</div>
-                <div class="stat-value"><?= $avgExecTime ?> <span style="font-size:1rem; font-weight:normal; color:var(--text-muted);">ms</span></div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div>
+                        <div class="stat-label">Rata-rata Waktu Eksekusi</div>
+                        <div class="stat-value"><?= $avgExecTime ?> <span style="font-size:1rem; font-weight:normal; color:var(--text-muted);">ms</span></div>
+                    </div>
+                    <div style="width:40px; height:40px; border-radius:10px; background:#ecfdf5; color:#059669; display:flex; align-items:center; justify-content:center;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -145,7 +180,7 @@ try {
             <div class="card-header">
                 <div>
                     <h2>Live EXPLAIN ANALYZE Tester (Analisis Sebelum & Sesudah Index)</h2>
-                    <p style="color: var(--text-muted); font-size: 0.88rem;">Gunakan alat ini untuk menguji dan mengambil capture performa query untuk laporan tugas UTS.</p>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-top:2px;">Gunakan alat ini untuk menguji dan mengambil capture performa query untuk laporan tugas UTS.</p>
                 </div>
             </div>
 
@@ -162,6 +197,7 @@ try {
                     </select>
 
                     <button type="submit" class="btn-primary" style="white-space: nowrap;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                         Uji & Generate EXPLAIN
                     </button>
                 </div>
@@ -170,10 +206,13 @@ try {
             <?php if ($benchKeyword !== ''): ?>
                 <div style="margin-top: 1.25rem;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <span style="font-weight: 600; font-size: 0.9rem;">
-                            Hasil Execution Plan (<?= strtoupper($benchIndex) ?>) | Total Request: <?= $benchTime ?> ms
+                        <span style="font-weight: 700; font-size: 0.9rem; color:var(--text-main);">
+                            Hasil Execution Plan (<?= strtoupper($benchIndex) ?>) | Total Request: <span style="color:var(--primary);"><?= $benchTime ?> ms</span>
                         </span>
-                        <button type="button" class="btn-sm" onclick="copyBenchPlan()">Salin Output</button>
+                        <button type="button" class="btn-sm" onclick="copyBenchPlan()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            Salin Output
+                        </button>
                     </div>
                     <pre class="explain-box" id="benchPlanText"><?= htmlspecialchars($benchResult) ?></pre>
                 </div>
@@ -185,19 +224,22 @@ try {
             <div class="card-header">
                 <div>
                     <h2>Riwayat Log Query Pengguna</h2>
-                    <p style="color: var(--text-muted); font-size: 0.88rem;">Setiap pencarian yang dilakukan user otomatis tercatat beserta rencana eksekusinya.</p>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-top:2px;">Setiap pencarian yang dilakukan user otomatis tercatat beserta rencana eksekusinya.</p>
                 </div>
                 <?php if (!empty($logs)): ?>
                     <form method="POST" action="admin.php" onsubmit="return confirm('Yakin ingin membersihkan semua log?');">
                         <input type="hidden" name="action" value="clear_logs">
-                        <button type="submit" class="btn-sm" style="color:var(--danger); border-color:#fca5a5;">Hapus Log</button>
+                        <button type="submit" class="btn-sm" style="color:var(--danger); border-color:#fca5a5;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            Hapus Log
+                        </button>
                     </form>
                 <?php endif; ?>
             </div>
 
             <?php if (empty($logs)): ?>
                 <div style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
-                    Belum ada log pencarian. Silakan lakukan pencarian di <a href="index.php">halaman pencarian</a>.
+                    Belum ada log pencarian. Silakan lakukan pencarian di <a href="index.php" style="color:var(--primary); font-weight:600;">halaman pencarian</a>.
                 </div>
             <?php else: ?>
                 <div class="table-responsive">
@@ -217,15 +259,18 @@ try {
                         <tbody>
                             <?php foreach ($logs as $log): ?>
                                 <tr>
-                                    <td><?= $log['id'] ?></td>
+                                    <td><strong><?= $log['id'] ?></strong></td>
                                     <td style="white-space: nowrap; font-size: 0.82rem; color: var(--text-muted);">
                                         <?= date('d/m/Y H:i:s', strtotime($log['created_at'])) ?>
                                     </td>
                                     <td>
-                                        <strong><?= htmlspecialchars($log['username']) ?></strong>
+                                        <div style="display:inline-flex; align-items:center; gap:0.35rem;">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                            <strong><?= htmlspecialchars($log['username']) ?></strong>
+                                        </div>
                                     </td>
                                     <td>
-                                        <code style="background:#f1f5f9; padding:2px 6px; border-radius:4px; font-weight:600;">
+                                        <code style="background:#f1f5f9; padding:3px 8px; border-radius:6px; font-weight:600; font-family:'JetBrains Mono', monospace; font-size:0.85rem; color:var(--text-main);">
                                             <?= htmlspecialchars($log['search_query']) ?>
                                         </code>
                                     </td>
@@ -236,7 +281,7 @@ try {
                                         <strong><?= number_format($log['results_count']) ?></strong> baris
                                     </td>
                                     <td>
-                                        <span style="color:<?= $log['execution_time_ms'] > 100 ? '#ea580c' : '#16a34a' ?>; font-weight:600;">
+                                        <span class="exec-time-pill" style="<?= $log['execution_time_ms'] > 100 ? 'background:#fff7ed; color:#c2410c; border-color:#ffedd5;' : '' ?>">
                                             <?= $log['execution_time_ms'] ?> ms
                                         </span>
                                     </td>
